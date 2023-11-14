@@ -1,7 +1,9 @@
 package mk.ukim.finki.mk.lab.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import mk.ukim.finki.mk.lab.model.Movie;
 import mk.ukim.finki.mk.lab.model.TicketOrder;
+import mk.ukim.finki.mk.lab.service.MovieService;
 import mk.ukim.finki.mk.lab.service.TicketOrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,17 +16,22 @@ import java.util.List;
 public class TicketOrderController {
 
     private final TicketOrderService ticketOrderService;
+    private final MovieService movieService;
 
-    public TicketOrderController(TicketOrderService ticketOrderService) {
+    public TicketOrderController(TicketOrderService ticketOrderService, MovieService movieService) {
         this.ticketOrderService = ticketOrderService;
+        this.movieService = movieService;
     }
 
     @GetMapping("/all/{clientName}")
     public String getTicketOrder(@PathVariable String clientName, Model model){
 
         List< TicketOrder > orders = ticketOrderService.getAllOrders(clientName);
+        List<Movie> movies = movieService.listAll();
+
 
         model.addAttribute("tickets", orders);
+        model.addAttribute("movies", movies);
 
         return "listAllTickets";
     }

@@ -20,7 +20,10 @@
             <li>
                 <form method="post" action="/tickets/edit">
                     <label for="movieTitle">Movie title</label>
-                        <input id="movieTitle" type="text" th:value="${ticket.getMovieTitle()}" name="movieTitle">
+                    <select id="movieTitle" name="movieTitle">
+                        <option th:each="movie : ${movies}" th:value="${movie.getTitle()}" th:text="${movie.getTitle()}" th:selected="${ticket.getMovieTitle().equals(movie.getTitle())}"></option>
+                    </select>
+<!--                    <input id="movieTitle" type="text" th:value="${ticket.getMovieTitle()}" name="movieTitle">-->
 
                     <label for="numberOfTickets">Number of tickets</label>
                     <input id="numberOfTickets" type="number" th:value="${ticket.getNumberOfTickets()}" name="numberOfTickets">
