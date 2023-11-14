@@ -1,0 +1,26 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Movie Ticket Order page - Welcome and choose a Movie</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Movie Ticket Shop App</h1>
+</header>
+<main>
+        <ul th:each="ticket : ${tickets}">
+            <li>
+                <p th:text="${ticket.getMovieTitle()}"></p>
+                <p th:text="${ticket.getNumberOfTickets()}"></p>
+            </li>
+        </ul>
+
+</main>
+</body>
+</html>

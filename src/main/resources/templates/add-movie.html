@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2 class="text-center">Add movie</h2>
+
+<h2 th:if="${hasError}" th:text="${error}"></h2>
+
+<div class="my-3">
+    <form th:action="@{'/movies/' + ${action}}" method="post" enctype="multipart/form-data"
+          style="max-width: 550px; margin: 0 auto">
+
+        <div class="p-3">
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="title">Title</label>
+                <div class="col-sm-9">
+                    <input type="text" name="movieTitle" th:value="${action == 'add'} ? '' : ${movie.getTitle()}" required minlength="2" maxlength="128" class="form-control"
+                           id="title" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="description">Summary</label>
+                <div class="col-sm-9">
+                    <input type="text" name="summary" th:value="${action == 'add'} ? '' :${movie.getSummary()}" minlength="2" maxlength="256" class="form-control"
+                           id="description" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="level">Rating</label>
+                <div class="col-sm-9">
+                    <input type="text" name="rating" th:value="${action == 'add'} ? '' :${movie.getRating()}" required
+                           class="form-control" id="level" th:disabled="${action == 'add'} ? 'false' : 'true'" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 form-check-label" for="prod">Producer</label>
+                <div class="col-sm-9">
+                    <select id="prod" name="productionId">
+                        <option th:each="producer : ${producers}" th:value="${producer.getId()}" th:text="${producer.getName()}" th:selected="${action != 'add' && producer.getId() == movie.getProduction().getId()} ? 'true' : 'false'"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <input type="submit" value="Add" class="btn btn-primary btn-sm mr-2" />
+            </div>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

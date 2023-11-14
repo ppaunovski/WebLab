@@ -1,0 +1,101 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Movie Ticket Order page - Welcome and choose a Movie</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Movie Ticket Shop App</h1>
+</header>
+<main>
+    <h2 th:text="${error}" style="color: red">
+
+    </h2>
+
+    <form th:method="get" th:action="@{/movies}">
+        <h2>Search a movie:</h2>
+        <label for="search">By name:</label>
+        <input id="search" type="text" name="search">
+        <label for="rating">By rating</label>
+        <input id="rating" type="text" name="rating">
+        <input type="submit" value="Search">
+    </form>
+    <form th:method="post" th:action="@{/tickets/all}">
+        <label for="sel">Select client</label>
+            <select id="sel" name="clientToList" >
+                <option th:each="client : ${clients}" th:value="${client}" th:text="${client}"></option>
+            </select>
+
+        <input type="submit" value="Select client">
+    </form>
+    <form th:method="post" th:action="@{/movies}">
+        <h2>Choose movie:</h2>
+        <!-- Display radio buttons for each movie,
+                the value should be the movie title
+                and the displayed text should be Title: <movie_title>, Summary:<movie_summary>, Rating: <movie_rating> -->
+<!--        <ul th:each="movie : ${movies}">-->
+<!--            <li>-->
+<!--                <input type="radio" name="chosenMovie" th:value="${movie.getTitle()}" th:text="${movie.getTitle() } + ' ' + ${movie.getSummary()} + ' ' + ${movie.getRating()}">-->
+<!--            </li>-->
+<!--        </ul>-->
+
+        <div th:if="${movies.size() > 0}">
+            <table class="table table-hover table-responsive-xl">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Select</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Summary</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Publisher</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="movie : ${movies}">
+                    <td>
+                        <input type="radio" name="chosenMovie" th:value="${movie.getId()}">
+                    </td>
+                    <th scope="row">[[${movie.getId()}]]</th>
+                    <td>[[${movie.getTitle()}]]</td>
+                    <td>[[${movie.getSummary()}]]</td>
+                    <td>[[${movie.getRating()}]]</td>
+                    <td>
+                        [[${movie.getProduction().getName()}]]
+                    </td>
+                    <td>
+                        <a th:href="@{'/movies/edit-form/' + ${movie.getId()}}" title="Edit this movie"
+                           class="fa-regular fa-pen-to-square icon-dark">Edit</a>
+
+                        <a th:href="@{'/movies/delete/' + ${movie.getId()}}" id="btnDelete"
+                           title="Delete this tutorial" class="fa-regular fa-trash-can icon-dark btn-delete">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Choose number of tickets:</h2>
+        <input type="number" name="numTickets" min="1" max="10"><br/>
+        <br/>
+        <label for="name">Enter your full name</label>
+        <input id="name" type="text" name="name">
+        <input type="submit" value="Submit">
+    </form>
+
+
+    <a th:href="@{/movies/add}">Add new movie</a>
+
+
+
+
+</main>
+</body>
+</html>
