@@ -13,4 +13,6 @@ public interface TicketOrderService {
     Set<String> getAllClients();
 
     TicketOrder getOrderById(Long orderId);
+
+    TicketOrder editTicketOrder(Long ticketId, String movieTitle, Long numberOfTickets);
 }

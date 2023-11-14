@@ -27,7 +27,9 @@ public class MovieController {
     }
 
     @GetMapping
-    public String getMoviesPage(@RequestParam(required = false) String error, @RequestParam(required = false) String search, @RequestParam(required = false) String rating , Model model){
+    public String getMoviesPage(HttpServletRequest request, @RequestParam(required = false) String error, @RequestParam(required = false) String search, @RequestParam(required = false) String rating , Model model){
+        Integer visits = (Integer) request.getServletContext().getAttribute("numberOfVisits");
+        request.getServletContext().setAttribute("numberOfVisits", ++visits);
         Set<String> clients = ticketOrderService.getAllClients();
         model.addAttribute("clients", clients);
         if(search != null && !search.isEmpty() && rating != null && !rating.isEmpty()){
@@ -44,6 +46,7 @@ public class MovieController {
         }
         model.addAttribute("hasError", false);
         model.addAttribute("error", error);
+        model.addAttribute("visits", visits);
 
         return "listMovies";
     }

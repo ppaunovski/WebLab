@@ -44,4 +44,13 @@ public class TicketOrderServiceImpl implements TicketOrderService {
         return ticketOrderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Invalid order id"));
     }
 
+    @Override
+    public TicketOrder editTicketOrder(Long ticketId, String movieTitle, Long numberOfTickets) {
+        ticketOrderRepository.findById(ticketId).ifPresent(t -> {
+            t.setNumberOfTickets(numberOfTickets);
+            t.setMovieTitle(movieTitle);
+        });
+        return ticketOrderRepository.findById(ticketId).orElseThrow(() -> new RuntimeException("Invalid ticket id"));
+    }
+
 }

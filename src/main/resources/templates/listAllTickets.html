@@ -14,12 +14,25 @@
     <h1>Welcome to our Movie Ticket Shop App</h1>
 </header>
 <main>
+
+
         <ul th:each="ticket : ${tickets}">
             <li>
-                <p th:text="${ticket.getMovieTitle()}"></p>
-                <p th:text="${ticket.getNumberOfTickets()}"></p>
+                <form method="post" action="/tickets/edit">
+                    <label for="movieTitle">Movie title</label>
+                        <input id="movieTitle" type="text" th:value="${ticket.getMovieTitle()}" name="movieTitle">
+
+                    <label for="numberOfTickets">Number of tickets</label>
+                    <input id="numberOfTickets" type="number" th:value="${ticket.getNumberOfTickets()}" name="numberOfTickets">
+
+                    <input hidden th:value="${ticket.getId()}" name="ticketId" type="number" >
+
+                    <input type="submit" value="Edit">
+
+                </form>
             </li>
         </ul>
+
 
 </main>
 </body>

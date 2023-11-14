@@ -5,10 +5,7 @@ import mk.ukim.finki.mk.lab.model.TicketOrder;
 import mk.ukim.finki.mk.lab.service.TicketOrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,5 +53,19 @@ public class TicketOrderController {
     public String listTicketForClient(HttpServletRequest request){
         String clientName = request.getParameter("clientToList");
         return "redirect:/tickets/all/" + clientName;
+    }
+
+    @PostMapping("/edit")
+    public String getTicketEdit(@RequestParam Long ticketId, @RequestParam String movieTitle, @RequestParam Long numberOfTickets, Model model){
+        TicketOrder order;
+        try{
+            order = ticketOrderService.editTicketOrder(ticketId, movieTitle, numberOfTickets);
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            return "redirect:movies?error=" + e.getMessage();
+        }
+
+        return "redirect:/tickets/all/" + order.getClientName();
     }
 }
