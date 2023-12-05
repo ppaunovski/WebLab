@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Data
 @Entity
+@Table(name = "shopping_carts")
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +21,7 @@ public class ShoppingCart {
     private User user;
     @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss")
     private LocalDateTime dateCreated;
-    @OneToMany
+    @OneToMany(mappedBy = "shoppingCart")
     private List<TicketOrder> ticketOrders;
     @Enumerated(EnumType.STRING)
     private ShoppingCartStatus status;

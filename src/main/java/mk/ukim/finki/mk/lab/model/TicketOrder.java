@@ -12,7 +12,7 @@ public class TicketOrder {
     public String movieTitle;
     public Long numberOfTickets;
     @ManyToOne
-    private User user;
+    private ShoppingCart shoppingCart;
     @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss")
     private LocalDateTime orderDate;
     @Id

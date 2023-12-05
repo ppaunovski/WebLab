@@ -1,9 +1,11 @@
 package mk.ukim.finki.mk.lab.service.impl;
 
+import mk.ukim.finki.mk.lab.model.ShoppingCart;
 import mk.ukim.finki.mk.lab.model.TicketOrder;
 import mk.ukim.finki.mk.lab.model.User;
+import mk.ukim.finki.mk.lab.model.enumerations.ShoppingCartStatus;
 import mk.ukim.finki.mk.lab.model.exceptions.OrderNotFound;
-import mk.ukim.finki.mk.lab.repository.InMemory.InMemTicketOrderRepository;
+import mk.ukim.finki.mk.lab.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.mk.lab.repository.ShoppingCartRepository;
 import mk.ukim.finki.mk.lab.repository.TicketOrderRepository;
 import mk.ukim.finki.mk.lab.repository.UserRepository;
@@ -31,26 +33,22 @@ public class TicketOrderServiceImpl implements TicketOrderService {
 
     @Override
     public TicketOrder placeOrder(String movieTitle, String username, int numberOfTickets, LocalDateTime orderDate) {
-        Optional<User> user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         LocalDateTime date = orderDate == null ? LocalDateTime.now() : orderDate;
         TicketOrder ticketOrder = new TicketOrder(movieTitle, (long) numberOfTickets, date.minusNanos(date.getNano()));
+        ticketOrder.setShoppingCart(shoppingCartRepository
+                .findByUserUsernameAndStatus(username, ShoppingCartStatus.CREATED)
+                .orElseGet(() -> {
+                    ShoppingCart shoppingCart = new ShoppingCart(user);
+                    return shoppingCartRepository.save(shoppingCart);
+                }));
+
         return ticketOrderRepository.save(ticketOrder);
     }
 
-    @Override
-    public TicketOrder getOrder(String username){
-        Optional<TicketOrder> ticketOrder = ticketOrderRepository.findByUserUsername(username);
-        return ticketOrder.orElseThrow(OrderNotFound::new);
-
-    }
 
     public List<TicketOrder> getAllOrders(String username){
-        return ticketOrderRepository.findAllByUserUsername(username);
-    }
-
-    @Override
-    public Set<String> getAllClients() {
-        return new HashSet<>();
+        return ticketOrderRepository.findAllByShoppingCartUserUsername(username);
     }
 
     @Override

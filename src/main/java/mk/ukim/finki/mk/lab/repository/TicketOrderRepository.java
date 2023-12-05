@@ -12,7 +12,6 @@ import java.util.Set;
 
 @Repository
 public interface TicketOrderRepository extends JpaRepository<TicketOrder, Long> {
-    Optional<TicketOrder> findByUserUsername(String username);
-    List<TicketOrder> findAllByUserUsername(String username);
+    List<TicketOrder> findAllByShoppingCartUserUsername(String username);
     List<TicketOrder> findAllByOrderDateAfterAndOrderDateBefore(LocalDateTime after, LocalDateTime before);
 }

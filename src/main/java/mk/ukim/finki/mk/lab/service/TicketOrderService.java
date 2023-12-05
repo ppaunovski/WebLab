@@ -8,10 +8,9 @@ import java.util.Set;
 
 public interface TicketOrderService {
     TicketOrder placeOrder(String movieTitle, String username, int numberOfTickets, LocalDateTime orderDate);
-    TicketOrder getOrder(String username);
+
     List<TicketOrder> getAllOrders(String username);
 
-    Set<String> getAllClients();
 
     TicketOrder getOrderById(Long orderId);
 

@@ -20,7 +20,7 @@ public class User {
     private String password;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfBirth;
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<ShoppingCart> carts;
 
 
