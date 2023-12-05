@@ -58,7 +58,7 @@ public class ShoppingCartController {
             orders = cart.getTicketOrders();
             List<Movie> movies = movieService.listAll();
 
-
+            model.addAttribute("username", username);
             model.addAttribute("tickets", orders);
             model.addAttribute("movies", movies);
             model.addAttribute("datetime", cart.getDateCreated());

@@ -83,4 +83,10 @@ public class TicketOrderController {
 
         return "redirect:/cart";
     }
+
+//    @GetMapping("/delete/{userId}/{orderId}")
+//    public String deleteOrder(@PathVariable Long orderId){
+//        ticketOrderService.delete(orderId);
+//        return "redirect:/movies";
+//    }
 }

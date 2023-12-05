@@ -16,6 +16,8 @@
 <main>
 
     <div>
+        <h1>Cart for user:</h1>
+        <p th:text="${username}"></p>
         <h1>Cart created:</h1>
         <p th:text="${#temporals.formatISO(datetime)}"></p>
     </div>
@@ -39,6 +41,7 @@
 
 
                     <input type="submit" value="Edit">
+<!--                    <a th:href="@{'/tickets/delete/' + ${ticket.getId()}}">Delete</a>-->
 
                 </form>
             </li>

@@ -67,4 +67,10 @@ public class TicketOrderServiceImpl implements TicketOrderService {
         return ticketOrderRepository.save(ticketOrder);
     }
 
+//    @Override
+//    public void delete(Long orderId) {
+//        shoppingCartRepository.deleteBy
+//        ticketOrderRepository.deleteById(orderId);
+//    }
+
 }

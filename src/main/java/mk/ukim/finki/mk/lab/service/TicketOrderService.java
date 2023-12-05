@@ -16,4 +16,6 @@ public interface TicketOrderService {
     TicketOrder getOrderById(Long orderId);
 
     TicketOrder editTicketOrder(Long ticketId, String movieTitle, Long numberOfTickets, LocalDateTime orderDate);
+
+    //void delete(Long orderId);
 }

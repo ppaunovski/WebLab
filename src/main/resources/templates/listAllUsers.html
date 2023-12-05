@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div>
+        <ul th:each="user:${users}">
+            <li>
+                <a th:href="@{'/user/' + ${user.getId()}}">
+                    <p th:text="${user.getUsername()}"></p>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>
