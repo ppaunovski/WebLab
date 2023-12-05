@@ -15,6 +15,10 @@
 </header>
 <main>
 
+    <div>
+        <h1>Cart created:</h1>
+        <p th:text="${#temporals.formatISO(datetime)}"></p>
+    </div>
 
         <ul th:each="ticket : ${tickets}">
             <li>
@@ -29,6 +33,10 @@
                     <input id="numberOfTickets" type="number" th:value="${ticket.getNumberOfTickets()}" name="numberOfTickets">
 
                     <input hidden th:value="${ticket.getId()}" name="ticketId" type="number" >
+
+                    <label for="dt">Chosen Date:</label>
+                    <input id="dt" name="orderDate" th:value="${ticket.getOrderDate()}" type="datetime-local"/>
+
 
                     <input type="submit" value="Edit">
 

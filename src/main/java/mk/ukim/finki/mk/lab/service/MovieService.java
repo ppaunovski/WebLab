@@ -11,11 +11,11 @@ public interface MovieService {
     List<Movie> searchMoviesByRating(double rating);
     List<Movie> searchMoviesByTextAndRating(String text, double rating);
 
-    void add(String movieTitle, String summary, String rating, String productionId);
+    void add(String movieTitle, String summary, Double rating, Long productionId);
 
     Movie findById(Long movieId) throws InvalidIdException;
 
-    void editMovieById(Long movieId, String title, String summary, String rating, String productionId);
+    void editMovieById(Long movieId, String title, String summary, Double rating, Long productionId);
 
     void deleteById(Long id);
 }

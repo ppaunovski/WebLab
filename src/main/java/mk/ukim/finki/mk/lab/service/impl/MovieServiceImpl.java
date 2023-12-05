@@ -1,17 +1,16 @@
 package mk.ukim.finki.mk.lab.service.impl;
 
-import mk.ukim.finki.mk.lab.bootstrap.DataHolder;
 import mk.ukim.finki.mk.lab.model.Movie;
 import mk.ukim.finki.mk.lab.model.Production;
 import mk.ukim.finki.mk.lab.model.exceptions.InvalidIdException;
 import mk.ukim.finki.mk.lab.model.exceptions.InvalidRatingInput;
 import mk.ukim.finki.mk.lab.model.exceptions.MissingMovieDetails;
+import mk.ukim.finki.mk.lab.model.exceptions.MovieNotFoundException;
 import mk.ukim.finki.mk.lab.repository.MovieRepository;
 import mk.ukim.finki.mk.lab.repository.ProductionRepository;
 import mk.ukim.finki.mk.lab.service.MovieService;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,33 +30,28 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> searchMoviesByText(String text) {
-        return movieRepository.searchMovies(text);
+        return movieRepository.findAllByTitleLike(text);
     }
 
     @Override
     public List<Movie> searchMoviesByRating(double rating) {
-        return movieRepository.searchMoviesByRating(rating);
+        return movieRepository.findAllByRating(rating);
     }
 
     @Override
     public List<Movie> searchMoviesByTextAndRating(String text, double rating) {
-        return movieRepository.searchMoviesByTextAndRating(text, rating);
+        return movieRepository.findAllByTitleContainingIgnoreCaseAndRating(text, rating);
+
     }
 
     @Override
-    public void add(String movieTitle, String summary, String rating, String productionId) {
-        Double dRating;
-        try{
-            dRating = Double.parseDouble(rating);
-        }
-        catch (Exception e){
-            throw new InvalidRatingInput("Invalid rating input");
-        }
+    public void add(String movieTitle, String summary, Double rating, Long productionId) {
+
         if(movieTitle.isEmpty() || summary.isEmpty()){
             throw new MissingMovieDetails("Missing movie details");
         }
-        Movie movie = new Movie(movieTitle, summary, dRating, productionRepository.findById(Integer.parseInt(productionId)).orElseThrow(() -> new RuntimeException("Production not found")));
-        movieRepository.add(movie);
+        Movie movie = new Movie(movieTitle, summary, rating, productionRepository.findById(productionId).orElseThrow(() -> new RuntimeException("Production not found")));
+        movieRepository.save(movie);
     }
 
     @Override
@@ -66,29 +60,23 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void editMovieById(Long movieId, String title, String summary, String rating, String productionId) {
-        Optional<Production> production = productionRepository.findById(Integer.parseInt(productionId));
-        Double dRating;
-        try{
-            dRating = Double.parseDouble(rating);
-        }
-        catch (Exception e){
-            throw new RuntimeException("Invalid rating");
-        }
+    public void editMovieById(Long movieId, String title, String summary, Double rating, Long productionId) {
+        Optional<Production> production = productionRepository.findById(productionId);
+
         Production prod = production.orElseThrow(() -> new RuntimeException("Invalid production id"));
-        movieRepository.findById(movieId).ifPresent(
-                m -> {
-                    m.setTitle(title);
-                    m.setSummary(summary);
-                    m.setRating(dRating);
-                    m.setProduction(prod);
-                }
-        );
+        Movie movie = movieRepository.findById(movieId).orElseThrow(MovieNotFoundException::new);
+
+        movie.setTitle(title);
+        movie.setSummary(summary);
+        movie.setRating(rating);
+        movie.setProduction(prod);
+
+        this.movieRepository.save(movie);
+
     }
 
     @Override
     public void deleteById(Long id) {
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Invalid movie id"));
-        movieRepository.findAll().remove(movie);
+        movieRepository.deleteById(id);
     }
 }

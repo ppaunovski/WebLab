@@ -8,7 +8,7 @@
 
 <h2 class="text-center">Add movie</h2>
 
-<h2 th:if="${hasError}" th:text="${error}"></h2>
+<h2  th:text="${error}"></h2>
 
 <div class="my-3">
     <form th:action="@{'/movies/' + ${action}}" method="post" enctype="multipart/form-data"
@@ -35,7 +35,7 @@
                 <label class="col-sm-3 col-form-label" for="level">Rating</label>
                 <div class="col-sm-9">
                     <input type="text" name="rating" th:value="${action == 'add'} ? '' :${movie.getRating()}" required
-                           class="form-control" id="level" th:disabled="${action == 'add'} ? 'false' : 'true'" />
+                           class="form-control" id="level"  />
                 </div>
             </div>
 

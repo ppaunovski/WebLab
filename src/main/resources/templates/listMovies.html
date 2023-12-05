@@ -1,4 +1,5 @@
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      >
 <head>
     <meta charset="utf-8">
     <title>Movie Ticket Order page - Welcome and choose a Movie</title>
@@ -27,15 +28,15 @@
         <input id="rating" type="text" name="rating">
         <input type="submit" value="Search">
     </form>
-    <form th:method="post" th:action="@{/tickets/all}">
-        <label for="sel">Select client</label>
-            <select id="sel" name="clientToList" >
-                <option th:each="client : ${clients}" th:value="${client}" th:text="${client}"></option>
-            </select>
+    <form th:method="get" th:action="@{/cart}">
+<!--        <label for="sel">Select client</label>-->
+<!--            <select id="sel" name="clientToList" >-->
+<!--                <option th:each="client : ${clients}" th:value="${client}" th:text="${client}"></option>-->
+<!--            </select>-->
 
-        <input type="submit" value="Select client">
+        <input type="submit" value="Show cart">
     </form>
-    <form th:method="post" th:action="@{/movies}">
+    <form th:method="post" th:action="@{/cart/add}">
         <h2>Choose movie:</h2>
         <!-- Display radio buttons for each movie,
                 the value should be the movie title
@@ -88,6 +89,9 @@
         <br/>
         <label for="name">Enter your full name</label>
         <input id="name" type="text" name="name">
+        <br>
+        <label for="date">Choose date:</label>
+        <input id="date" type="datetime-local" name="date"/>
         <input type="submit" value="Submit">
     </form>
 

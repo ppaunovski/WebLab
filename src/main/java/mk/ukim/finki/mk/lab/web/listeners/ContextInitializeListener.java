@@ -9,6 +9,8 @@ public class ContextInitializeListener implements ServletContextListener
 {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        System.out.println("SERVLET CONTEXT INIT");
         sce.getServletContext().setAttribute("numberOfVisits", 0);
+        sce.getServletContext().setAttribute("page", 20);
     }
 }

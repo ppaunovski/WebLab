@@ -1,20 +1,37 @@
 package mk.ukim.finki.mk.lab.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Data
+@Entity
 public class TicketOrder {
     public String movieTitle;
-    public String clientName;
-    public String clientAddress;
     public Long numberOfTickets;
+    @ManyToOne
+    private User user;
+    @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss")
+    private LocalDateTime orderDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    public TicketOrder(String movieTitle, String clientName, String clientAddress, Long numberOfTickets) {
-        this.id = (long) (Math.random() * 1000);
+    public TicketOrder(String movieTitle, Long numberOfTickets) {
         this.movieTitle = movieTitle;
-        this.clientName = clientName;
-        this.clientAddress = clientAddress;
         this.numberOfTickets = numberOfTickets;
+        this.orderDate = LocalDateTime.now();
+    }
+
+    public TicketOrder(String movieTitle, Long numberOfTickets, LocalDateTime orderDate) {
+        this.movieTitle = movieTitle;
+        this.numberOfTickets = numberOfTickets;
+        this.orderDate = orderDate;
+    }
+
+    public TicketOrder() {
+
     }
 }

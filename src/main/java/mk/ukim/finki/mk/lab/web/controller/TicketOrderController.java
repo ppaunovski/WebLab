@@ -3,12 +3,15 @@ package mk.ukim.finki.mk.lab.web.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import mk.ukim.finki.mk.lab.model.Movie;
 import mk.ukim.finki.mk.lab.model.TicketOrder;
+import mk.ukim.finki.mk.lab.model.User;
 import mk.ukim.finki.mk.lab.service.MovieService;
 import mk.ukim.finki.mk.lab.service.TicketOrderService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -37,7 +40,7 @@ public class TicketOrderController {
     }
 
     @GetMapping("/bought/{orderId}")
-    public String getLastBoughtTicket(@PathVariable Long orderId, Model model){
+    public String getLastBoughtTicket(@PathVariable Long orderId, Model model, HttpServletRequest request){
         TicketOrder order;
         try {
             order = ticketOrderService.getOrderById(orderId);
@@ -50,8 +53,7 @@ public class TicketOrderController {
 
         model.addAttribute("chosenMovie", order.getMovieTitle());
         model.addAttribute("numTickets", order.getNumberOfTickets());
-        model.addAttribute("address", order.getClientAddress());
-        model.addAttribute("name", order.getClientName());
+        model.addAttribute("name", ((User)request.getSession().getAttribute("user")).getUsername());
 
         return "orderConfirmation";
     }
@@ -63,16 +65,22 @@ public class TicketOrderController {
     }
 
     @PostMapping("/edit")
-    public String getTicketEdit(@RequestParam Long ticketId, @RequestParam String movieTitle, @RequestParam Long numberOfTickets, Model model){
+    public String getTicketEdit(@RequestParam Long ticketId,
+                                @RequestParam String movieTitle,
+                                @RequestParam Long numberOfTickets,
+                                @RequestParam("orderDate") @DateTimeFormat(
+                                        iso = DateTimeFormat.ISO.DATE_TIME)
+                                    LocalDateTime orderDate,
+                                Model model){
         TicketOrder order;
         try{
-            order = ticketOrderService.editTicketOrder(ticketId, movieTitle, numberOfTickets);
+            order = ticketOrderService.editTicketOrder(ticketId, movieTitle, numberOfTickets, orderDate);
         }
         catch (RuntimeException e){
             System.out.println(e.getMessage());
             return "redirect:movies?error=" + e.getMessage();
         }
 
-        return "redirect:/tickets/all/" + order.getClientName();
+        return "redirect:/cart";
     }
 }
